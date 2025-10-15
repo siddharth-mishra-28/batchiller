@@ -88,8 +88,8 @@ These samples can be found in the `batchiller-samples` module and are packaged i
 - **Web UI**: A new section in the web dashboard allows users to create, view, edit, and delete scheduled jobs/pipelines.
 
 #### Web UI
-![System Metrics](dashboard-ui-1.png)
-![Trends and Pipeline Logs](dashboard-ui-2.png)
+![System Metrics](dashboard_ui_1.png)
+![Execution Trends, Pipelines and Logs](dashboard_ui_2.png)
 
 #### Artifact References
 
