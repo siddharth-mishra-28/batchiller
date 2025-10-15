@@ -297,38 +297,6 @@ public class MetricsEventListener implements JobEventListener {
 }
 ```
 
-## 💡 Creating Custom Jobs (Legacy)
-
-```java
-import com.batchiller.api.*;
-import java.util.concurrent.CompletableFuture;
-
-public class MyCustomJob implements BatchJob {
-    
-    @Override
-    public String getName() {
-        return "MyCustomJob";
-    }
-    
-    @Override
-    public String getDescription() {
-        return "My custom batch job";
-    }
-    
-    @Override
-    public CompletableFuture<JobResult> execute(JobContext context) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                // Your job logic here
-                return JobResult.success("Job completed!");
-            } catch (Exception e) {
-                return JobResult.failure(e);
-            }
-        });
-    }
-}
-```
-
 ## 🔄 Creating Pipelines
 
 ```java
