@@ -91,6 +91,27 @@ These samples can be found in the `batchiller-samples` module and are packaged i
 ![System Metrics](dashboard-ui-1.png)
 ![Trends and Pipeline Logs](dashboard-ui-2.png)
 
+#### Artifact References
+
+- **Batchiller Core**
+```xml
+<dependency>
+    <groupId>io.github.siddharth-mishra-28</groupId>
+    <artifactId>batchiller-core</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+- **Batchiller Server**
+- This package can be directly downloaded from maven central and run as a standalone executable (details below)
+```xml
+<dependency>
+    <groupId>io.github.siddharth-mishra-28</groupId>
+    <artifactId>batchiller-server</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
 ## 🏗️ Architecture
 
 ### Module Overview
