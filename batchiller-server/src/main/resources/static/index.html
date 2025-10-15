@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batchiller - Batch Pipeline Orchestration</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Batchiller Dashboard</h1>
+            <p>Production-Grade Batch Pipeline Orchestration Platform</p>
+        </header>
+
+        <div class="control-panel">
+            <div class="control-item">
+                <label for="refreshInterval">Refresh Frequency (seconds):</label>
+                <select id="refreshInterval" onchange="updateRefreshInterval()">
+                    <option value="1">1s</option>
+                    <option value="2" selected>2s</option>
+                    <option value="5">5s</option>
+                    <option value="10">10s</option>
+                    <option value="30">30s</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-card">
+                <h3>CPU Usage</h3>
+                <canvas id="cpuChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Memory Usage</h3>
+                <canvas id="memoryChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Active Threads</h3>
+                <canvas id="threadsChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Queue Size</h3>
+                <canvas id="queueChart"></canvas>
+            </div>
+        </div>
+
+        <div class="trend-section">
+            <div class="trend-controls">
+                <h3>Execution Trends (Last 7 Days)</h3>
+                <div class="control-item">
+                    <label for="jobFilter">Filter by Job:</label>
+                    <select id="jobFilter" onchange="updateTrendsChart()">
+                        <option value="all">All Jobs</option>
+                    </select>
+                </div>
+            </div>
+            <canvas id="trendsChart"></canvas>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📋 Jobs</h2>
+                <input type="text" id="jobSearch" placeholder="Search jobs..." oninput="filterJobs()">
+            </div>
+            <div id="jobsList" class="list-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>🔄 Pipelines</h2>
+                <input type="text" id="pipelineSearch" placeholder="Search pipelines..." oninput="filterPipelines()">
+            </div>
+            <div id="pipelinesList" class="list-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>⏰ Scheduled Jobs</h2>
+                <button class="btn" onclick="openScheduleModal()">Schedule New Job/Pipeline</button>
+            </div>
+            <div id="scheduledJobsList" class="list-container"></div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>📊 Recent Executions (Last 10)</h2>
+                <input type="text" id="executionSearch" placeholder="Search by job name or date..." oninput="filterExecutions()">
+            </div>
+            <div id="executionsList" class="list-container"></div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+
+    <!-- Schedule Job Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeScheduleModal()">&times;</span>
+            <h2>Schedule Job/Pipeline</h2>
+            <form id="scheduleForm">
+                <input type="hidden" id="scheduleId">
+                <label for="scheduleName">Name:</label>
+                <input type="text" id="scheduleName" required>
+
+                <label for="scheduleType">Type:</label>
+                <select id="scheduleType" onchange="updateTargetOptions()" required>
+                    <option value="JOB">Job</option>
+                    <option value="PIPELINE">Pipeline</option>
+                </select>
+
+                <label for="scheduleTargetName">Target Name:</label>
+                <select id="scheduleTargetName" required>
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+
+                <label for="scheduleCronExpression">Cron Expression:</label>
+                <input type="text" id="scheduleCronExpression" placeholder="e.g., 0 0 * * * ?" required>
+
+                <label for="scheduleParameters">Parameters (JSON):</label>
+                <textarea id="scheduleParameters" rows="5" placeholder="{}"></textarea>
+
+                <label for="scheduleEnabled">Enabled:</label>
+                <input type="checkbox" id="scheduleEnabled" checked>
+
+                <button type="submit" class="btn">Save Schedule</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

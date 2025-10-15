@@ -1,0 +1,12 @@
+.idea/
+
+jobs/
+
+*.log
+*.tmp
+*.bak
+.DS_Store
+/settings.xml
+target/
+jobs/
+batchiller-server/data/

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Designer - Batchiller</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        #canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: crosshair;
+        }
+        .designer-container {
+            display: flex;
+            gap: 20px;
+        }
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .canvas-area {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .job-node {
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            cursor: move;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Pipeline Flow Designer</h1>
+            <p><a href="/" style="color: #667eea;">← Back to Dashboard</a></p>
+        </header>
+
+        <div class="designer-container">
+            <div class="sidebar">
+                <h3>Available Jobs</h3>
+                <div id="jobsList"></div>
+                <hr style="margin: 20px 0;">
+                <h3>Flow Type</h3>
+                <select id="flowType" style="width: 100%; padding: 8px;">
+                    <option value="SEQUENTIAL">Sequential</option>
+                    <option value="PARALLEL">Parallel</option>
+                    <option value="CONDITIONAL">Conditional</option>
+                </select>
+            </div>
+
+            <div class="canvas-area">
+                <h3>Pipeline Canvas</h3>
+                <svg id="canvas" width="800" height="600"></svg>
+                <div style="margin-top: 20px;">
+                    <input type="text" id="pipelineName" placeholder="Pipeline Name" style="padding: 8px; width: 300px;">
+                    <button class="btn" onclick="savePipeline()">Save Pipeline</button>
+                    <button class="btn" style="background: #6c757d;" onclick="clearCanvas()">Clear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const nodes = [];
+        
+        async function loadJobs() {
+            const response = await fetch('/api/jobs');
+            const jobs = await response.json();
+            const jobsList = document.getElementById('jobsList');
+            
+            jobsList.innerHTML = jobs.map(job => 
+                `<div class="job-node" draggable="true" data-job="${job.name}">${job.name}</div>`
+            ).join('');
+        }
+        
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', 30);
+            circle.setAttribute('fill', '#667eea');
+            canvas.appendChild(circle);
+            
+            nodes.push({x, y});
+        });
+        
+        function clearCanvas() {
+            canvas.innerHTML = '';
+            nodes.length = 0;
+        }
+        
+        function savePipeline() {
+            const name = document.getElementById('pipelineName').value;
+            const flow = document.getElementById('flowType').value;
+            alert(`Pipeline "${name}" with ${flow} flow saved! (${nodes.length} nodes)`);
+        }
+        
+        loadJobs();
+    </script>
+</body>
+</html>

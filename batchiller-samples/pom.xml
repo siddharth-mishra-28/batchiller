@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.github.siddharth-mishra-28</groupId>
+        <artifactId>batchiller-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>batchiller-samples</artifactId>
+    <packaging>jar</packaging>
+
+    <name>Batchiller Samples</name>
+    <description>Sample batch jobs demonstrating Batchiller capabilities</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.siddharth-mishra-28</groupId>
+            <artifactId>batchiller-core</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Main samples JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            
+            <!-- Individual job JARs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>create-individual-job-jars</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Copy main JAR to jobs directory -->
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar" 
+                                      todir="${project.basedir}/../jobs" 
+                                      overwrite="true"/>
+                                
+                                <!-- Create individual JAR for DataProcessingJob -->
+                                <jar destfile="${project.basedir}/../jobs/DataProcessingJob-${project.version}.jar">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="com/batchiller/samples/jobs/DataProcessingJob.class"/>
+                                    </fileset>
+                                    <manifest>
+                                        <attribute name="Job-Class" value="com.batchiller.samples.jobs.DataProcessingJob"/>
+                                        <attribute name="Job-Name" value="DataProcessingJob"/>
+                                        <attribute name="Job-Version" value="${project.version}"/>
+                                    </manifest>
+                                </jar>
+                                
+                                <!-- Create individual JAR for ReportGenerationJob -->
+                                <jar destfile="${project.basedir}/../jobs/ReportGenerationJob-${project.version}.jar">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="com/batchiller/samples/jobs/ReportGenerationJob.class"/>
+                                    </fileset>
+                                    <manifest>
+                                        <attribute name="Job-Class" value="com.batchiller.samples.jobs.ReportGenerationJob"/>
+                                        <attribute name="Job-Name" value="ReportGenerationJob"/>
+                                        <attribute name="Job-Version" value="${project.version}"/>
+                                    </manifest>
+                                </jar>
+
+                                <!-- Create individual JAR for CpuIntensiveJob -->
+                                <jar destfile="${project.basedir}/../jobs/CpuIntensiveJob-${project.version}.jar">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="com/batchiller/samples/jobs/CpuIntensiveJob.class"/>
+                                    </fileset>
+                                    <manifest>
+                                        <attribute name="Job-Class" value="com.batchiller.samples.jobs.CpuIntensiveJob"/>
+                                        <attribute name="Job-Name" value="CpuIntensiveJob"/>
+                                        <attribute name="Job-Version" value="${project.version}"/>
+                                    </manifest>
+                                </jar>
+
+                                <!-- Create individual JAR for IoIntensiveJob -->
+                                <jar destfile="${project.basedir}/../jobs/IoIntensiveJob-${project.version}.jar">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="com/batchiller/samples/jobs/IoIntensiveJob.class"/>
+                                    </fileset>
+                                    <manifest>
+                                        <attribute name="Job-Class" value="com.batchiller.samples.jobs.IoIntensiveJob"/>
+                                        <attribute name="Job-Name" value="IoIntensiveJob"/>
+                                        <attribute name="Job-Version" value="${project.version}"/>
+                                    </manifest>
+                                </jar>
+
+                                <!-- Create individual JAR for SequentialPipeline -->
+                                <jar destfile="${project.basedir}/../jobs/SequentialPipeline-${project.version}.jar">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="com/batchiller/samples/pipelines/SequentialPipeline.class"/>
+                                        <include name="com/batchiller/samples/jobs/CpuIntensiveJob.class"/>
+                                        <include name="com/batchiller/samples/jobs/IoIntensiveJob.class"/>
+                                    </fileset>
+                                    <manifest>
+                                        <attribute name="Pipeline-Class" value="com.batchiller.samples.pipelines.SequentialPipeline"/>
+                                        <attribute name="Pipeline-Name" value="SequentialPipeline"/>
+                                        <attribute name="Pipeline-Version" value="${project.version}"/>
+                                    </manifest>
+                                </jar>
+
+                                <!-- Create individual JAR for ParallelPipeline -->
+                                <jar destfile="${project.basedir}/../jobs/ParallelPipeline-${project.version}.jar">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="com/batchiller/samples/pipelines/ParallelPipeline.class"/>
+                                        <include name="com/batchiller/samples/jobs/CpuIntensiveJob.class"/>
+                                        <include name="com/batchiller/samples/jobs/IoIntensiveJob.class"/>
+                                    </fileset>
+                                    <manifest>
+                                        <attribute name="Pipeline-Class" value="com.batchiller.samples.pipelines.ParallelPipeline"/>
+                                        <attribute name="Pipeline-Name" value="ParallelPipeline"/>
+                                        <attribute name="Pipeline-Version" value="${project.version}"/>
+                                    </manifest>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
