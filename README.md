@@ -95,10 +95,10 @@ These samples can be found in the `batchiller-samples` module and are packaged i
 
 ### Module Overview
 
-| Module | Purpose | Key Components |
-|--------|---------|----------------|
-| **batchiller-api** | Core domain & extensibility | Interfaces, models, events, exceptions |
-| **batchiller-server** | Execution engine & UI | Engine, DB, HTTP, monitoring, scheduler |
+| Module | Purpose | Key Components                           |
+|--------|---------|------------------------------------------|
+| **batchiller-api** | Core domain & extensibility | Interfaces, models, events, exceptions   |
+| **batchiller-server** | Execution engine & UI | Engine, DB, HTTP, monitoring, scheduling |
 
 ### Execution Flow
 1. Jobs registered with `JobExecutionEngine`
